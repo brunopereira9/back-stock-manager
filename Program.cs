@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using stock_manager.Context;
+using stock_manager.Persistence.Context;
+using stock_manager.Persistence.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ builder.Services.AddDbContext<AppDbContext>(
         builder.Configuration.GetConnectionString("DatabaseLocal")
     )
 );
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
