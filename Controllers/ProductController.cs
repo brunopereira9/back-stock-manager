@@ -5,6 +5,7 @@ using stock_manager.Persistence.Repositories;
 
 namespace stock_manager.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
@@ -33,11 +34,27 @@ namespace stock_manager.Controllers
         }
 
         // GET: api/Product/5
-        [HttpGet("{id}")]
+        [HttpGet("Id/{id}")]
         public ActionResult<Product> GetById(int id)
         {
             try{
                 var product = _repository.GetById(id);
+                if (product == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(product);
+            }catch(Exception e){
+                return BadRequest(e.Message);
+            }
+        }
+// GET: api/Product/5
+        [HttpGet("Name/{name}")]
+        public ActionResult<Product> GetByName(string name)
+        {
+            try{
+                var product = _repository.GetByName(name);
                 if (product == null)
                 {
                     return NotFound();
@@ -112,7 +129,7 @@ namespace stock_manager.Controllers
 
                 _repository.Remove(product);
 
-                return NoContent();
+                return Ok();
             }catch(Exception e){
                 return BadRequest(e.Message);
             }

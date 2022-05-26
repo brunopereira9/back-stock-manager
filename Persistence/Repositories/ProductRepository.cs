@@ -47,7 +47,12 @@ namespace stock_manager.Persistence.Repositories
 
         public Product GetByName(string name)
         {
-            throw new NotImplementedException();
+            return GetEntity()?
+                .Include(
+                    product => product.StockConferences
+                        .OrderByDescending(stockConferences=>stockConferences.Id)
+                )
+                .SingleOrDefault(product => product.Name == name)!;
         }
 
         public void Insert(Product product)
